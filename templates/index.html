@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<main>
+  <header>
+    <div class="header-row">
+      <div class="brand">
+        <span class="brand-clip">Clip</span><span class="brand-per">per</span>
+        <span class="badge">PRIVATE</span>
+      </div>
+      <a href="/logout" class="logout-btn">Sign out</a>
+    </div>
+    <p class="tagline">Download videos from YouTube, Twitter, Instagram, Facebook, Reddit &amp; TikTok</p>
+  </header>
+
+  <div class="pills">
+    <span class="pill yt">▶ YouTube</span>
+    <span class="pill tw">𝕏 Twitter/X</span>
+    <span class="pill ig">📸 Instagram</span>
+    <span class="pill fb">👤 Facebook</span>
+    <span class="pill rd">👾 Reddit</span>
+    <span class="pill tk">🎵 TikTok</span>
+  </div>
+
+  <div class="card">
+
+    <div class="field">
+      <label class="field-label">
+        VIDEO / PLAYLIST URL
+        <span id="platform-tag" class="platform-tag"></span>
+      </label>
+      <div class="input-wrap" id="url-wrap">
+        <input id="url-input" type="url" placeholder="Paste a link — YouTube, Twitter, Instagram…" autocomplete="off" spellcheck="false">
+        <button class="mini-btn" id="paste-btn">⌘ Paste</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="field-label">QUALITY</label>
+        <select id="quality-select">
+          {% for q in quality_options %}
+          <option>{{ q }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">FORMAT</label>
+        <select id="format-select">
+          {% for f in format_options %}
+          <option>{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- Playlist toggle -->
+    <div class="playlist-row" id="playlist-row">
+      <label class="toggle-label">
+        <span class="toggle-wrap">
+          <input type="checkbox" id="playlist-toggle">
+          <span class="toggle-slider"></span>
+        </span>
+        <span class="toggle-text">
+          <span class="toggle-title">Download entire playlist</span>
+          <span class="toggle-sub" id="playlist-hint">Enable to grab all videos in a playlist</span>
+        </span>
+      </label>
+    </div>
+
+    <button class="dl-btn" id="dl-btn">
+      <span class="dl-icon">↓</span> DOWNLOAD
+    </button>
+
+    <!-- Progress bar -->
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-stats" id="progress-stats">
+        <span class="pstat" id="stat-pct">0%</span>
+        <span class="pstat" id="stat-speed"></span>
+        <span class="pstat" id="stat-eta"></span>
+        <span class="pstat pstat-file" id="stat-file"></span>
+      </div>
+    </div>
+
+    <div class="status" id="status">Ready — paste a link and hit Download</div>
+
+  </div>
+
+  <footer>
+    Powered by yt-dlp &nbsp;·&nbsp; Personal / private use only
+  </footer>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

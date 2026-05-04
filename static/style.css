@@ -1,0 +1,361 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0a0a0f;
+  --surface:  #12121a;
+  --card:     #16161f;
+  --card2:    #1c1c28;
+  --border:   #2a2a3d;
+  --accent:   #6c63ff;
+  --green:    #43e97b;
+  --white:    #f0f0ff;
+  --grey:     #8888aa;
+  --grey-dim: #44445a;
+  --error:    #ff4466;
+  --warn:     #ffaa00;
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Top accent bar ──────────────────────────────────── */
+.topbar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #ff6584, var(--green));
+}
+
+/* ── Layout ──────────────────────────────────────────── */
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+header { margin-bottom: 20px; }
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.logout-btn {
+  font-size: 12px;
+  color: var(--grey-dim);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.logout-btn:hover { color: var(--white); border-color: var(--grey); }
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  margin-bottom: 6px;
+}
+
+.brand-clip { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--white); }
+.brand-per  { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--accent); }
+
+.badge {
+  margin-left: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+  align-self: center;
+}
+
+.tagline { font-size: 13px; color: var(--grey); }
+
+/* ── Platform pills ──────────────────────────────────── */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.pill {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 11px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.pill.tk { color: #ff0050; }
+
+/* ── Card ────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Field ───────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 7px; }
+
+.field-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--grey);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.platform-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+
+.input-wrap {
+  display: flex;
+  gap: 8px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px 4px 4px 14px;
+  transition: border-color 0.2s;
+}
+.input-wrap:focus-within { border-color: var(--accent); }
+
+.input-wrap input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  padding: 8px 0;
+}
+.input-wrap input::placeholder { color: var(--grey-dim); }
+
+.mini-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--grey);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.mini-btn:hover { color: var(--white); border-color: var(--grey); }
+
+/* ── Row (quality + format) ──────────────────────────── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+select {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 10px 14px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888aa' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+select:focus { border-color: var(--accent); }
+
+/* ── Playlist toggle ─────────────────────────────────── */
+.playlist-row {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  transition: border-color 0.2s;
+}
+.playlist-row.active { border-color: var(--accent); }
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-wrap { position: relative; flex-shrink: 0; }
+.toggle-wrap input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+.toggle-slider {
+  display: block;
+  width: 40px;
+  height: 22px;
+  background: var(--border);
+  border-radius: 11px;
+  transition: background 0.2s;
+  position: relative;
+}
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--grey);
+  transition: transform 0.2s, background 0.2s;
+}
+.toggle-wrap input:checked + .toggle-slider { background: var(--accent); }
+.toggle-wrap input:checked + .toggle-slider::after {
+  transform: translateX(18px);
+  background: #fff;
+}
+
+.toggle-text { display: flex; flex-direction: column; gap: 2px; }
+.toggle-title { font-size: 13px; font-weight: 500; color: var(--white); }
+.toggle-sub   { font-size: 11px; color: var(--grey); }
+
+/* ── Download button ─────────────────────────────────── */
+.dl-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 14px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.dl-btn:hover:not(:disabled) { opacity: 0.88; }
+.dl-btn:active:not(:disabled) { transform: scale(0.98); }
+.dl-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.dl-icon { font-size: 18px; line-height: 1; }
+
+/* ── Progress bar ────────────────────────────────────── */
+.progress-wrap {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+.progress-wrap.visible { display: flex; }
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--card2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+
+.progress-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pstat {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--grey);
+}
+
+.pstat:first-child {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 13px;
+  min-width: 42px;
+}
+
+.pstat + .pstat:not(:empty)::before {
+  content: '·';
+  margin-right: 12px;
+  color: var(--grey-dim);
+}
+
+.pstat-file {
+  color: var(--grey-dim);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+/* ── Status text ─────────────────────────────────────── */
+.status {
+  font-size: 12px;
+  color: var(--grey);
+  min-height: 18px;
+  transition: color 0.2s;
+}
+.status.ok     { color: var(--green); }
+.status.err    { color: var(--error); }
+.status.active { color: var(--white); }
+
+/* ── Footer ──────────────────────────────────────────── */
+footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--grey-dim);
+}
+
+/* ── Login page ──────────────────────────────────────── */
+.login-card {
+  max-width: 360px;
+  margin: 80px auto 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

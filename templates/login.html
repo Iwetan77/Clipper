@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipper — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .login-brand {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .login-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--grey);
+    margin-top: -12px;
+  }
+  .login-error {
+    background: rgba(255, 68, 102, 0.12);
+    border: 1px solid rgba(255, 68, 102, 0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--error);
+    text-align: center;
+  }
+  .login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .login-field label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--grey);
+  }
+  .login-input-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .login-input-wrap:focus-within { border-color: var(--accent); }
+  .login-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 12px 14px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  .login-input::placeholder { letter-spacing: 0; color: var(--grey-dim); }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<div class="login-wrap">
+  <div class="login-card">
+
+    <div class="login-brand">
+      <div class="brand" style="justify-content:center">
+        <span class="brand-clip">Clip</span><span class="brand-per">per</span>
+        <span class="badge">PRIVATE</span>
+      </div>
+    </div>
+    <p class="login-sub">Enter the password to continue</p>
+
+    {% if error %}
+    <div class="login-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+      <div class="login-field" style="margin-bottom: 16px;">
+        <label for="password">PASSWORD</label>
+        <div class="login-input-wrap">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            class="login-input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            autofocus
+          >
+        </div>
+      </div>
+      <button type="submit" class="dl-btn">
+        <span class="dl-icon">→</span> ENTER
+      </button>
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>
