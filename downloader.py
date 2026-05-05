@@ -86,9 +86,13 @@ def build_ydl_opts(url: str, quality: str, fmt: str, save_path: str,
         height = quality.replace("p", "")
         if has_ffmpeg:
             ydl_format = (
-                f"bestvideo[height<={height}][ext={fmt}]+bestaudio/best"
-                f"/bestvideo[height<={height}]+bestaudio/best"
-            )
+    f"bestvideo[height<={height}][ext={fmt}]+bestaudio/best"
+    f"/bestvideo[height<={height}]+bestaudio/best"
+    f"/bestvideo[height<={height}]+bestaudio"
+    f"/best[height<={height}][ext={fmt}]"
+    f"/best[height<={height}]"
+    f"/bestvideo+bestaudio/best"
+)
         else:
             # No ffmpeg — best single-file stream at or below requested height
             ydl_format = (
