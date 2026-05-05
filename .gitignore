@@ -1,0 +1,8 @@
+# Never commit actual cookie files — they contain your login session
+cookies/*.txt
+downloads/*
+!downloads/.gitkeep
+!cookies/.gitkeep
+__pycache__/
+*.pyc
+.env

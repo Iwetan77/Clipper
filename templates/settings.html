@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipper — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+.settings-card { display: flex; flex-direction: column; gap: 0; }
+.platform-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.platform-row:last-child { border-bottom: none; }
+.platform-name { font-size: 14px; font-weight: 500; flex: 1; }
+.cookie-status {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.cookie-status.ok  { background: rgba(67,233,123,0.12); color: var(--green); }
+.cookie-status.no  { background: rgba(136,136,170,0.1); color: var(--grey-dim); }
+.platform-actions { display: flex; gap: 8px; align-items: center; }
+.upload-label {
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.upload-label:hover { opacity: 0.85; }
+.upload-label input { display: none; }
+.del-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--error);
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.del-btn:hover { border-color: var(--error); }
+.guide {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 12px;
+  color: var(--grey);
+  line-height: 1.7;
+}
+.guide strong { color: var(--white); }
+.guide code {
+  font-family: 'DM Mono', monospace;
+  background: var(--bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--grey);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--white); }
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 18px;
+  font-size: 13px; color: var(--white);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.ok  { border-color: var(--green); color: var(--green); }
+.toast.err { border-color: var(--error); color: var(--error); }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<main>
+  <a href="/" class="back-link">← Back to Clipper</a>
+
+  <header>
+    <div class="brand" style="margin-bottom:4px">
+      <span class="brand-clip">Clip</span><span class="brand-per">per</span>
+      <span class="badge" style="background:var(--grey-dim)">SETTINGS</span>
+    </div>
+    <p class="tagline">Manage authentication cookies for each platform</p>
+  </header>
+
+  <div class="guide" style="margin-bottom:20px">
+    <strong>Why cookies?</strong> Cloud servers get blocked by YouTube, Instagram and Twitter as bots.
+    Uploading your browser cookies lets Clipper download as <em>you</em>, bypassing the block.<br><br>
+    <strong>How to export:</strong> Install the Chrome extension
+    <strong>"Get cookies.txt LOCALLY"</strong>, go to the site while logged in,
+    click the extension → <code>Export</code> → upload the <code>.txt</code> file below.
+    Your login session is never shared — it stays on this server only.
+  </div>
+
+  <div class="card settings-card">
+    {% for key, label in platforms %}
+    <div class="platform-row" id="row-{{ key }}">
+      <span class="platform-name">{{ label }}</span>
+      <span class="cookie-status {{ 'ok' if statuses[key] else 'no' }}" id="status-{{ key }}">
+        {{ '✓ Active' if statuses[key] else 'No cookies' }}
+      </span>
+      <div class="platform-actions">
+        <label class="upload-label">
+          ↑ Upload
+          <input type="file" accept=".txt,text/plain" data-platform="{{ key }}" onchange="uploadCookies(this)">
+        </label>
+        {% if statuses[key] %}
+        <button class="del-btn" id="del-{{ key }}" onclick="deleteCookies('{{ key }}', '{{ label }}')">Remove</button>
+        {% else %}
+        <button class="del-btn" id="del-{{ key }}" onclick="deleteCookies('{{ key }}', '{{ label }}')" style="display:none">Remove</button>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+async function uploadCookies(input) {
+  const platform = input.dataset.platform;
+  const file = input.files[0];
+  if (!file) return;
+
+  const fd = new FormData();
+  fd.append('platform', platform);
+  fd.append('cookies', file);
+
+  try {
+    const res  = await fetch('/api/cookies/upload', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+
+    document.getElementById('status-' + platform).textContent = '✓ Active';
+    document.getElementById('status-' + platform).className = 'cookie-status ok';
+    document.getElementById('del-' + platform).style.display = '';
+    showToast('✓ Cookies uploaded for ' + platform, 'ok');
+  } catch (e) {
+    showToast('✗ ' + e.message, 'err');
+  }
+  input.value = '';
+}
+
+async function deleteCookies(platform, label) {
+  const fd = new FormData();
+  fd.append('platform', platform);
+  await fetch('/api/cookies/delete', { method: 'POST', body: fd });
+
+  document.getElementById('status-' + platform).textContent = 'No cookies';
+  document.getElementById('status-' + platform).className = 'cookie-status no';
+  document.getElementById('del-' + platform).style.display = 'none';
+  showToast('Removed cookies for ' + label);
+}
+</script>
+</body>
+</html>

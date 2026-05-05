@@ -177,3 +177,55 @@ if __name__ == "__main__":
     print(f"\n  Clipper running → http://0.0.0.0:5000")
     print(f"  Password: {APP_PASSWORD}\n")
     app.run(host="0.0.0.0", port=5000, debug=False, threaded=True)
+
+
+# ── Settings / Cookie Upload ──────────────────────────────────────────────────
+
+COOKIES_DIR = os.path.join(os.path.dirname(__file__), "cookies")
+os.makedirs(COOKIES_DIR, exist_ok=True)
+
+COOKIE_PLATFORMS = [
+    ("youtube",   "YouTube"),
+    ("twitter",   "Twitter / X"),
+    ("instagram", "Instagram"),
+    ("facebook",  "Facebook"),
+    ("tiktok",    "TikTok"),
+    ("reddit",    "Reddit"),
+]
+
+
+@app.route("/settings")
+@login_required
+def settings():
+    statuses = {}
+    for key, _ in COOKIE_PLATFORMS:
+        path = os.path.join(COOKIES_DIR, f"{key}.txt")
+        statuses[key] = os.path.exists(path)
+    return render_template("settings.html", platforms=COOKIE_PLATFORMS, statuses=statuses)
+
+
+@app.route("/api/cookies/upload", methods=["POST"])
+@login_required
+def upload_cookies():
+    platform = request.form.get("platform", "").strip().lower()
+    valid = [k for k, _ in COOKIE_PLATFORMS]
+    if platform not in valid:
+        return jsonify(error="Unknown platform"), 400
+
+    f = request.files.get("cookies")
+    if not f or not f.filename:
+        return jsonify(error="No file provided"), 400
+
+    dest = os.path.join(COOKIES_DIR, f"{platform}.txt")
+    f.save(dest)
+    return jsonify(ok=True, message=f"Cookies saved for {platform}")
+
+
+@app.route("/api/cookies/delete", methods=["POST"])
+@login_required
+def delete_cookies():
+    platform = request.form.get("platform", "").strip().lower()
+    path = os.path.join(COOKIES_DIR, f"{platform}.txt")
+    if os.path.exists(path):
+        os.remove(path)
+    return jsonify(ok=True)
